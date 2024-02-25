@@ -17,9 +17,14 @@ const Problem1 = () => {
     const status = form.status.value;
     const newData = { name, status };
     // Update tasks using the functional form of setTasks
-    setTasks((prevTasks) => [...prevTasks, newData]);
+    setTasks(prevTasks => {
+        const updatedTasks = [...prevTasks, newData];
+        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+        return updatedTasks;
+      });
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
+    form.reset()
   };
 
   // Inside your component body to retrieve data when component mounts
@@ -30,7 +35,19 @@ const Problem1 = () => {
     }
   }, []);
 
-  console.log(tasks);
+  //   console.log(tasks);
+  const filteredTasks = tasks.filter((item) => {
+    if (show === "all") {
+      return true;
+    } else {
+      return item.status === show;
+    }
+  });
+
+  filteredTasks.sort((a, b) => {
+    const order = { active: 1, completed: 2 };
+    return (order[a.status] || 3) - (order[b.status] || 3);
+  });
 
   return (
     <div className="container">
@@ -103,7 +120,7 @@ const Problem1 = () => {
               </tr>
             </thead>
             <tbody>
-              {tasks.map((item, index) => (
+              {filteredTasks.map((item, index) => (
                 <tr key={index}>
                   <td scope="col">{item?.name}</td>
                   <td scope="col">{item?.status}</td>
