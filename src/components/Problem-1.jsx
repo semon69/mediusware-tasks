@@ -16,6 +16,7 @@ const Problem1 = () => {
     const name = form.name.value;
     const status = form.status.value;
     const newData = { name, status };
+
     // Update tasks using the functional form of setTasks
     setTasks(prevTasks => {
         const updatedTasks = [...prevTasks, newData];
@@ -27,7 +28,7 @@ const Problem1 = () => {
     form.reset()
   };
 
-  // Inside your component body to retrieve data when component mounts
+  // retrieve data when component mounts
   useEffect(() => {
     const storedTasks = JSON.parse(localStorage.getItem("tasks"));
     if (storedTasks) {
@@ -35,7 +36,7 @@ const Problem1 = () => {
     }
   }, []);
 
-  //   console.log(tasks);
+  
   const filteredTasks = tasks.filter((item) => {
     if (show === "all") {
       return true;
